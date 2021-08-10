@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    .conta img{
+    border: 5px solid black;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+
+}
+.conta .data{
+    text-align: center;
+}
+.conta label,input{
+     font-size: large;
+     font-weight: bold;
+     height: 35px;
+     text-align: center;
+
+ }
+ .conta label{
+     text-align: center;
+     font-size: 25px;
+
+ }
+ .conta .text{
+     font-size: 30px;
+     font-weight: bold;
+     margin-bottom:20px ;
+     margin-top:20px ;
+
+     text-align: center;
+     text-align: center;
+
+ }
+ .conta input{
+     margin-bottom: 20px;
+     border: 2px solid black;
+
+ }
+ .conta button{
+     width:256px;
+     height: 35px;
+     font-size: x-large;
+     font-weight: bold;
+     border: 3px solid black;
+     border-radius:5px;
+     background:linear-gradient(90deg,cyan,rgb(49, 49, 248),blue,indigo);
+     text-align: center;
+ }
+ .conta button:hover{
+     background:linear-gradient(90deg,indigo,blue,rgb(49, 49, 248),cyan);
+ }
+ .conta .btn{
+     text-align: center;
+ }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.banner{
+    text-align: center;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 16px 19px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+.header {
+  background:url("https://cdn.nohat.cc/thumb/f/720/30ce3d4d950a4caf987f.jpg");
+  background-size: cover;
+  padding: 5px;
+  text-align: center;
+  color: white;
+  text-shadow: 5px 5px 5px black;
+}
+.content {
+  padding: 16px;
+}
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+.sticky + .content {
+  padding-top: 60px;
+}
+
+</style>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
+    
+    
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyBGsnQp7nYGGeOfU07Jpy7YjFFXBTutaa8",
+        authDomain: "mind-your-math.firebaseapp.com",
+        projectId: "mind-your-math",
+        storageBucket: "mind-your-math.appspot.com",
+        messagingSenderId: "935472173449",
+        appId: "1:935472173449:web:fce4511cfa22f7a2f31158"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+</head>
+<body onload="if(localStorage.getItem('name')===null){
+    document.getElementById('form').style.display='block';
+    document.getElementById('other').style.display='none';
+}">
+    <div id="form" class="conta" style="display: none;">
+        <div class="text">Sign Up Form</div>
+
+        <form id="myForm" onsubmit="submitData()">
+            <div class="data ss-item-required">
+                <label for="name">Name: </label><br>
+            <input autocomplete=none type="text" name="name" id="name" placeholder="Your Name" maxlength="15" required>
+            
+            </div>
+           
+            <div class="data ss-item-required">
+                <label for="pass">Enter Class: </label><br>
+                <input name="pass" id="pass" placeholder="Your Class" required maxlength="2">
+              
+            </div>
+            <div class="data ss-item-required">
+              <label for="pass">Choose Profile Photo: </label><br>
+              <img id="brain" src="brain.png" onclick="setImg('brain')" width=50>
+              <img id="boy" src="boy.png" onclick="setImg('boy')" width="50">
+              <img id="girl" src="girl.png" onclick="setImg('girl')" width=50>
+              <img id="ink" src="ink.png" onclick="setImg('ink')" width="50"height=50>
+              <Br>
+              <img id="ninja" src="ninja.png" onclick="setImg('ninja')" width="50">
+              <img id="student" src="student.png" onclick="setImg('student')" width=50>
+              
+              <img id="ci" src="" width=50 height="50">
+              <div class="image-upload">
+                <label for="choi">
+                  <img style="width:250px;height: 40px;border-radius: 0%;border:2px solid black;object-fit: contain;margin-bottom: 10px;" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-camera-512.png"/>
+                </label>
+              <input style="width: 50px;display: none;" id="choi" type="file" src="http://simpleicon.com/wp-content/uploads/camera.png" onchange="chooseI()">
+           </div>
+            </div>
+           
+           <div class="btn">
+            <button type="submit">Sign up</button>
+        </div>
+        </form>
+
+    </div>
+    </div>
+    <div id="other">
+    <div class="header">
+<div class="banner"><h1 style="font-size: xx-large">Mind Your Maths</h1>
+<h2 style="font-size: large;">- 💖 Maths Loves Us 💖</h2></div>
+</div>
+<div class="topnav" id="navbar">
+  <a onclick="
+  document.getElementById('home').style.background='#04aa6d'
+  document.getElementById('home').style.color='white'
+  document.getElementById('videos').style.background='#333'
+  document.getElementById('quiz').style.background='#333'
+  document.getElementById('about').style.background='#333'
+  document.getElementById('share').style.background='#333'
+  document.getElementById('doubt').style.background='#333'
+  document.getElementById('home').style.color='white'
+  document.getElementById('ui').style.display='block';
+  document.getElementById('iframe').style.display='none';
+  " id="home">Home</a>
+  <a onclick="
+  document.getElementById('videos').style.background='#04aa6d'
+  document.getElementById('videos').style.color='white'
+  document.getElementById('home').style.background='#333'
+  document.getElementById('quiz').style.background='#333'
+  document.getElementById('about').style.background='#333'
+  document.getElementById('share').style.background='#333'
+  document.getElementById('doubt').style.background='#333'
+  document.getElementById('ui').style.display='none';
+  document.getElementById('iframe').style.display='block';
+  document.getElementById('iframe').src='videos.html'
+  " id="videos">Videos</a>
+  <a onclick="
+   document.getElementById('quiz').style.background='#04aa6d'
+  document.getElementById('quiz').style.color='white'
+  document.getElementById('home').style.background='#333'
+  document.getElementById('videos').style.background='#333'
+  document.getElementById('about').style.background='#333'
+  document.getElementById('share').style.background='#333'
+  document.getElementById('doubt').style.background='#333'
+  document.getElementById('ui').style.display='none';
+  document.getElementById('iframe').style.display='block';
+  document.getElementById('iframe').src='quiz.html'
+  " id="quiz">Quizzes</a>
+  <a onclick="
+     document.getElementById('doubt').style.background='#04aa6d'
+  document.getElementById('doubt').style.color='white'
+  document.getElementById('home').style.background='#333'
+  document.getElementById('videos').style.background='#333'
+  document.getElementById('about').style.background='#333'
+  document.getElementById('share').style.background='#333'
+  document.getElementById('quiz').style.background='#333'
+  document.getElementById('ui').style.display='none';
+  document.getElementById('iframe').style.display='block';
+  document.getElementById('iframe').src='doubts.html'
+  " id="doubt">Doubts</a>
+  <a onclick="
+     document.getElementById('share').style.background='#04aa6d'
+  document.getElementById('share').style.color='white'
+  document.getElementById('home').style.background='#333'
+  document.getElementById('videos').style.background='#333'
+  document.getElementById('about').style.background='#333'
+  document.getElementById('doubt').style.background='#333'
+  document.getElementById('quiz').style.background='#333'
+  document.getElementById('ui').style.display='none';
+  document.getElementById('iframe').style.display='block';
+  document.getElementById('iframe').src='share.html'
+  " id="share">Share</a>
+  <a onclick="
+     document.getElementById('about').style.background='#04aa6d'
+  document.getElementById('about').style.color='white'
+  document.getElementById('home').style.background='#333'
+  document.getElementById('videos').style.background='#333'
+  document.getElementById('quiz').style.background='#333'
+  document.getElementById('share').style.background='#333'
+  document.getElementById('doubt').style.background='#333'
+  document.getElementById('ui').style.display='none';
+  document.getElementById('iframe').style.display='block';
+  document.getElementById('iframe').src='about.html'
+  " id="about">About</a>
+
+</div>
+<div class="content" id="content">
+    <div id="ui">
+    <img id="img"  width="70" height="70" style="clear: all;float: left;margin-right: 10px;"><br>
+    <label>Name: </label><label id="naam"></label><br>
+    <label>Class: </label><label id="cla"></label><br>
+    <h3>Quizzes Played: <label id="qp"></label></h3>
+    <h3>Questions Attempted: <label id="qa"></label></h3>
+    <h3>Questions Correct: <label id="qc"></label></h3>
+</div>
+  <iframe id="iframe" src="" frameborder="0" style="overflow: scroll;display: none;"></iframe>
+  </div>
+  </div>
+  <script>
+         var navbar = document.getElementById("navbar");
+    var sticky = navbar.offsetTop;
+   setInterval(function(){
+    navbar = document.getElementById("navbar");
+     sticky = navbar.offsetTop;
+    
+    
+      if (window.pageYOffset > sticky) {
+        navbar.classList.add("sticky")
+      } else {
+        navbar.classList.remove("sticky");
+      }
+document.getElementById("content").style.height=window.innerHeight-document.getElementById("content").offsetTop-15+"px"
+document.getElementById("iframe").style.height=window.innerHeight-document.getElementById("iframe").offsetTop-15+"px"
+document.getElementById("iframe").style.width=window.innerWidth-document.getElementById("iframe").offsetLeft-15+"px"
+    
+   },100)
+   function chooseI() {
+  var file = document.getElementById("choi").files[0];
+  var reader = new FileReader();
+  reader.onloadend = function() {
+    document.getElementById("ci").setAttribute('src',reader.result)
+    pro=reader.result
+    document.getElementById('ci').style.borderColor="gold"
+  }
+    reader.readAsDataURL(file);
+}
+function repI() {
+  var file = document.getElementById("selc").files[0];
+  var reader = new FileReader();
+  reader.onloadend = function() {
+    document.getElementById("prophoto").setAttribute('src',reader.result)
+    document.getElementById("profile").setAttribute('src',reader.result)
+
+    pro=reader.result
+    localStorage.setItem('profile',pro)
+  }
+    reader.readAsDataURL(file);
+}
+function setImg(imgr){
+      pro=imgr+".png";
+      document.getElementById(imgr).style.borderColor="gold";
+    }
+    var database = firebase.database();
+        var users;
+        database.ref("Users/users").on('value',function(data){
+            users=data.val();
+        })
+    function submitData(){
+        event.preventDefault()
+        if(pro){
+            document.getElementById("form").style.pointerEvents="none"       
+            database.ref("Users/users").on('value',function(data){
+            users=data.val();
+        })
+        users++     
+            database.ref("Users").set({
+                users:users
+            })
+            database.ref(users+" "+document.getElementById('name').value).set({
+                Name:document.getElementById('name').value,
+                Class:document.getElementById('pass').value,
+                Profile:pro,
+                QP:0,
+                QA:0,
+                QC:0,
+            })
+        localStorage.setItem("name",document.getElementById('name').value);
+        localStorage.setItem("class",document.getElementById('pass').value);
+        localStorage.setItem("profile",pro);
+        localStorage.setItem("qp",0);
+        localStorage.setItem("qa",0);
+        localStorage.setItem("qc",0);
+        setTimeout(function(){
+            location.reload();
+        },2000)
+        }
+        else{
+            alert("Please Choose A Profile Picture !")
+        }
+    }
+document.getElementById("naam").innerHTML=localStorage.getItem("name")
+document.getElementById("cla").innerHTML=localStorage.getItem("class")
+document.getElementById("qp").innerHTML=localStorage.getItem("qp")
+document.getElementById("qa").innerHTML=localStorage.getItem("qa")
+document.getElementById("qc").innerHTML=localStorage.getItem("qc")
+
+document.getElementById("img").setAttribute('src',localStorage.getItem("profile"))
+    </script>
+</body>
+</html>

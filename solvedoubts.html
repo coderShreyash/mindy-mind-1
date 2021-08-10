@@ -1,0 +1,154 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      .fancy{
+      background: rgb(1, 172, 252);
+      color:white;
+      text-shadow: 1px 1px 5px black;
+      border: 2px solid white;
+      font-size: 27.5px;
+      font-weight: 700;
+      padding-left: 15px;
+      padding-right: 15px;
+      border-radius: 20px;
+    }
+    #nav{
+      text-align: center;
+    }
+    .dbtp{
+      padding: 10px;
+      color:white;
+      text-shadow: 2.5px 2.5px 5px black,-2.5px -2.5px 5px black;
+      background-size: fill;
+      width: auto;
+
+    }
+    .flex{
+  display:flex;
+}
+.class{
+  height:auto;
+}
+.class h2{
+width: 100%;
+overflow: hidden;
+  margin-bottom:10px;
+}
+  </style>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
+
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBGsnQp7nYGGeOfU07Jpy7YjFFXBTutaa8",
+    authDomain: "mind-your-math.firebaseapp.com",
+    projectId: "mind-your-math",
+    storageBucket: "mind-your-math.appspot.com",
+    messagingSenderId: "935472173449",
+    appId: "1:935472173449:web:fce4511cfa22f7a2f31158"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+</head>
+<body onload="loadbts()">
+  <button id="toggle" style="position: absolute;top:0;right:0;color:white;background:rgb(80, 80, 255);text-shadow: 2px 2px 10px white;"
+  onclick="
+  if(document.getElementById('nav').style.display==='none'){
+  document.getElementById('nav').style.display='block';
+  document.getElementById('rest').style.display='none';
+  document.getElementById('toggle').innerHTML='❌'
+  document.getElementById('toggle').style.background='rgb(250, 69, 69)'
+  }
+  else{
+  document.getElementById('nav').style.display='none';
+  document.getElementById('rest').style.display='block';
+  document.getElementById('toggle').innerHTML='↙'
+  document.getElementById('toggle').style.background='rgb(80, 80, 255)'
+  }
+  ">↙</button>
+  <div style="display: none;" id="nav">
+    <h2 class="dbtp" style="background:url('https://media.istockphoto.com/vectors/seamless-question-mark-doubt-background-vector-id608621766?k=6&m=608621766&s=170667a&w=0&h=OKPp_VtwOfHXF5rYOUbdhjoS9zPbDH7kH8gy4hbagII=');">Doubts</h2>
+  <button class="fancy" onclick="location.href=location.href.replace('solvedoubts','doubts')">Ask A Doubt</button><br><br>
+<button class="fancy" onclick="location.reload()">See Your Doubts</button>
+</div>
+<div id="rest">
+ <h2>Your Doubts:</h2>
+ <div id="doubts"></div>
+ </div>
+ <script>
+   var database=firebase.database()
+   var doubts = 0;
+   var naam=""
+  var date=""
+  var doubt=""
+  var image=""
+  var status=""
+  var ds=""
+  var sb=""
+
+   database.ref("Doubts/doubts").on('value',function(data){
+doubts=data.val()
+})
+   function loadbts(){
+    database.ref("Doubts/doubts").on('value',function(data){
+doubts=data.val()
+})
+document.getElementById("doubts").innerHTML=""
+
+for(var i=1;i<=doubts;i++){
+
+  database.ref("Doubt"+i+"/AskedBy").on('value',function(data){
+naam=data.val();
+  })
+  if(naam===localStorage.getItem("name")){
+  database.ref("Doubt"+i+"/Date").on('value',function(data){
+date=data.val();
+  })
+  database.ref("Doubt"+i+"/Image").on('value',function(data){
+image=data.val();
+  })
+
+  database.ref("Doubt"+i+"/Status").on('value',function(data){
+status=data.val();
+  })
+ 
+  database.ref("Doubt"+i+"/DaySolved").on('value',function(data){
+ds=data.val();
+  })
+  database.ref("Doubt"+i+"/Doubt").on('value',function(data){
+doubt=data.val();
+  })
+  if(image===""){
+    image="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482930.jpg"
+  }
+  if(ds===""){
+ds=status
+  }
+  document.getElementById("doubts").innerHTML+="<div class='class' onclick=SeeDoubt("+i+")><h2>"+i+". "+doubt.slice(0,17)+" ...</h2><img src="+image+" width=80 height=60 style='float:left'><label>Asked On: "+date.slice(0,15)+" </label><br><label>Solved On: "+ds+" </label></div>"
+}   
+else{
+
+}
+}
+
+}
+setInterval(function(){
+  loadbts();
+},500)
+function SeeDoubt(number){
+window.open(location.href.replace("solvedoubts.html","doubt.html?"+number))
+}
+ </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img{
+            width: 100px;
+            height: 70px;
+        }
+        
+    </style>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
+
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBGsnQp7nYGGeOfU07Jpy7YjFFXBTutaa8",
+    authDomain: "mind-your-math.firebaseapp.com",
+    projectId: "mind-your-math",
+    storageBucket: "mind-your-math.appspot.com",
+    messagingSenderId: "935472173449",
+    appId: "1:935472173449:web:fce4511cfa22f7a2f31158"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+</head>
+<body>
+   <h3>Here Are Our Videos About Math: </h3>
+   <div id="videos"style="margin-top:-40px"></div>
+   <script>
+   var vids=0;
+       var database = firebase.database()
+       database.ref("Videos/Vids").on('value',
+       function(data){
+vids=data.val()
+       }
+       )
+       setInterval(function(){
+        document.getElementById("videos").innerHTML=""
+        for(var i=vids;i>=1;i--){
+       database.ref("Videos/Vid"+i+"/name").on('value',function(data){
+          vid="<br><br>"+(vids-i+1)+". "+data.val()+"<br>"
+           
+       })
+       database.ref("Videos/Vid"+i+"/image").on('value',function(data){
+          vid+="<img src='"+data.val()+"'>"
+       })
+       database.ref("Videos/Vid"+i+"/url").on('value',function(data){
+          vid+="<br><button style='margin-top:-22px;margin-left:100px'><a href='"+data.val()+"'target=blank>See Video</a></button>"
+       })
+       document.getElementById("videos").innerHTML+=vid
+       }
+       },100)
+      
+   </script>
+</body>
+</html>

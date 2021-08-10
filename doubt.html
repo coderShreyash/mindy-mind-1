@@ -1,0 +1,165 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+      <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
+
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBGsnQp7nYGGeOfU07Jpy7YjFFXBTutaa8",
+    authDomain: "mind-your-math.firebaseapp.com",
+    projectId: "mind-your-math",
+    storageBucket: "mind-your-math.appspot.com",
+    messagingSenderId: "935472173449",
+    appId: "1:935472173449:web:fce4511cfa22f7a2f31158"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+<style>
+#rate{
+    float: left;
+}
+#rate label {
+	float: right;
+	width: 0.8em;
+	overflow: hidden;
+	white-space: nowrap;
+	cursor: pointer;
+	font-size: 180%;
+	color: lightgrey;
+}
+
+#rate label:before {
+	content: "★";
+}
+
+
+</style>
+
+</head>
+<body onload="ShowAnimation()">
+    <div id="main" >
+
+    </div>
+    <div id="loader">
+        <center>
+        <img src="https://cdn.dribbble.com/users/973570/screenshots/10288203/media/39ab7b715cfd865249a1b705ec250161.gif" width="300" height="225">
+        <h2>Loading Your Doubt ...</h2>
+    </center>
+    </div>
+    <script>
+        var database = firebase.database();
+        var number = location.search.replace("?","");
+        var doubt="";
+        var as="";
+        var so="";
+        var sol="";
+        var img="";
+        var status="";
+        var rating="";
+        var user="";
+
+
+var sb=""
+function loadoubt(){
+    database.ref('Doubt'+number+"/Doubt").on('value',function(data){
+doubt=data.val();
+        })
+        database.ref('Doubt'+number+"/AskedBy").on('value',function(data){
+user=data.val();
+        })
+        database.ref('Doubt'+number+"/Image").on('value',function(data){
+img=data.val();
+        })
+        database.ref('Doubt'+number+"/Date").on('value',function(data){
+as=data.val();
+        })
+        database.ref('Doubt'+number+"/DaySolved").on('value',function(data){
+so=data.val();
+        })
+        database.ref('Doubt'+number+"/Solution").on('value',function(data){
+sol=data.val();
+        })
+        database.ref('Doubt'+number+"/Status").on('value',function(data){
+status=data.val();
+        })
+        database.ref('Doubt'+number+"/Rating").on('value',function(data){
+rating=data.val();
+        })
+        if(so===""){
+so=status.slice(0,13)
+        }
+        if(sb===""){
+sb=status
+        }
+        if(img===""){
+            document.getElementById("main").innerHTML="<h2>Doubt: "+doubt+"</h2><label>Date Asked: "+as+"</label><Br><label>Date Solved: "+so+"</label><h2>Solution: </h2><h3>"+sol+"</h3><label>Solved By: "+sb+"</label>"
+            }
+        else if(img!==""){
+            document.getElementById("main").innerHTML="<h2>Doubt: "+doubt+"</h2><img width =100 height=80 src="+img+"><br><label>Date Asked: "+as+"</label><Br><label>Date Solved: "+so+"</label><h2>Solution: </h2><h3>"+sol+"</h3><label>"+sb+"</label>"
+        }
+       document.getElementById("main").innerHTML+="<h2>Rate Solution:</h2><div id='rate'><label id='5-star' onclick='rate(5)' title='Amazing'>5 stars</label><label id='4-star' onclick=rate(4) title='Good'>4 stars</label><label id='3-star' onclick=rate(3) title='Average'>3 stars</label><label id='2-star' onclick=rate(2) title='Not Good'>2 stars</label><label id='1-star' onclick=rate(1) title='Bad'>1 star</label></div>"
+
+    }
+    setInterval(function(){
+        loadoubt();
+        if(rating===1){
+            document.getElementById("1-star").style.color="gold"
+        }
+        if(rating===2){
+            document.getElementById("1-star").style.color="gold"
+            document.getElementById("2-star").style.color="gold"
+        }
+        if(rating===3){
+            document.getElementById("1-star").style.color="gold"
+            document.getElementById("2-star").style.color="gold"
+            document.getElementById("3-star").style.color="gold"
+        }
+        if(rating===4){
+            document.getElementById("1-star").style.color="gold"
+            document.getElementById("2-star").style.color="gold"
+            document.getElementById("3-star").style.color="gold"
+            document.getElementById("4-star").style.color="gold"
+        }
+        if(rating===5){
+            document.getElementById("1-star").style.color="gold"
+            document.getElementById("2-star").style.color="gold"
+            document.getElementById("3-star").style.color="gold"
+            document.getElementById("4-star").style.color="gold"
+            document.getElementById("5-star").style.color="gold"
+
+        }
+        },500)
+    function ShowAnimation(){
+        document.getElementById("main").style.display="none";
+        document.getElementById("loader").style.display="block";
+        setTimeout(function(){
+            document.getElementById("main").style.display="block";
+        document.getElementById("loader").style.display="none";
+        },4790)
+    }
+    function rate(num){
+database.ref("Doubt"+number).set({
+    Status:status,
+    Date:as,
+    Image:img,
+    DaySolved:so,
+    Solution:sol,
+    AskedBy:user,
+Doubt:doubt,
+  Rating:num
+})
+    }
+    </script>
+</body>
+</html>

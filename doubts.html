@@ -1,0 +1,156 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      .fancy{
+        background: rgb(1, 172, 252);
+        color:white;
+        text-shadow: 1px 1px 5px black;
+        border: 2px solid white;
+        font-size: 27.5px;
+        font-weight: 700;
+        padding-left: 15px;
+        padding-right: 15px;
+        border-radius: 20px;
+      }
+      #nav{
+        text-align: center;
+      }
+      .dbtp{
+        padding: 10px;
+        color:white;
+        text-shadow: 2.5px 2.5px 5px black,-2.5px -2.5px 5px black;
+        background-size: fill;
+        width: auto;
+      }
+    </style>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
+
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBGsnQp7nYGGeOfU07Jpy7YjFFXBTutaa8",
+    authDomain: "mind-your-math.firebaseapp.com",
+    projectId: "mind-your-math",
+    storageBucket: "mind-your-math.appspot.com",
+    messagingSenderId: "935472173449",
+    appId: "1:935472173449:web:fce4511cfa22f7a2f31158"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+</head>
+<body>
+  <button id="toggle" style="position: absolute;top:0;right:0;color:white;background:rgb(80, 80, 255);text-shadow: 2px 2px 10px white;"
+  onclick="
+  if(document.getElementById('nav').style.display==='none'){
+  document.getElementById('nav').style.display='block';
+  document.getElementById('rest').style.display='none';
+  document.getElementById('toggle').innerHTML='❌'
+  document.getElementById('toggle').style.background='rgb(250, 69, 69)'
+  }
+  else{
+  document.getElementById('nav').style.display='none';
+  document.getElementById('rest').style.display='block';
+  document.getElementById('toggle').innerHTML='↙'
+  document.getElementById('toggle').style.background='rgb(80, 80, 255)'
+  }
+  ">↙</button>
+  <div style="display: none;" id="nav">
+    <h2 class="dbtp" style="background:url('https://media.istockphoto.com/vectors/seamless-question-mark-doubt-background-vector-id608621766?k=6&m=608621766&s=170667a&w=0&h=OKPp_VtwOfHXF5rYOUbdhjoS9zPbDH7kH8gy4hbagII=');">Doubts</h2>
+  <button class="fancy" onclick="location.reload()">Ask A Doubt</button><br><br>
+<button class="fancy" onclick="location.href=location.href.replace('doubts','solvedoubts')">See Your Doubts</button>
+</div>
+  <div id="console" style="display: none;">
+   
+    <img src="https://i.gifer.com/7kfO.gif" width="100">
+    <h2>Your Doubt Would Be Solved Within 24 Hours.</h2>
+    <h3>Check The Solved Doubts Section</h3>
+  </div>
+  <div id="rest">
+    <h3>Enter Your Doubt: </h3>
+    <textarea id="ques" cols="30" rows="2"></textarea>
+    <h3>Choose Related Image (optional)</h3>
+    <img style="border: 2px solid black;" width="80" height="40" id="ci">
+    <label for="choi">
+        <img style="width:50px;height: 40px;border-radius: 0%;object-fit: contain;margin-bottom: -7.5px;" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-camera-512.png"/>
+      </label>
+    <input style="width: 50px;display: none;" id="choi" type="file" src="http://simpleicon.com/wp-content/uploads/camera.png" onchange="chooseI()">
+<br><br><button onclick="askDoubt()">Ask Doubt</button>
+</div>
+<script>
+  var database = firebase.database();
+  var dbts=0;
+  var mdbts=0;
+
+       var database = firebase.database()
+       database.ref("Doubts/doubts").on('value',
+       function(data){
+dbts=data.val()
+       })
+  var pro="";
+       function chooseI() {
+  var file = document.getElementById("choi").files[0];
+  var reader = new FileReader();
+  reader.onloadend = function() {
+    document.getElementById("ci").setAttribute('src',reader.result)
+    pro=reader.result
+    document.getElementById('ci').style.borderColor="gold"
+  }
+    reader.readAsDataURL(file);
+}
+function askDoubt(){
+  var doubt = document.getElementById("ques").value;
+  var img = pro;
+  if(doubt.trim().length>10){
+    if(localStorage.getItem("NOD")===null){
+      localStorage.setItem("NOD",1)
+    }
+    else{
+      mdbts=localStorage.getItem("NOD")
+      mdbts++
+      localStorage.setItem("NOD",mdbts)
+    }
+    dbts++
+    database.ref("Doubts/").set({doubts:dbts})
+    database.ref("Doubts/doubts").on('value',
+       function(data){
+dbts=data.val()
+       })
+database.ref("Doubt"+dbts).set({
+  Date:Date().slice(0,24),
+  Doubt:doubt,
+  Image:img,
+  Status:"To Be Solved Within 24 hours ⏰",
+  DaySolved:"",
+  AskedBy:localStorage.getItem("name"),
+  Solution:"",
+  Rating:""
+
+
+})
+document.getElementById("console").style.display="block";
+document.getElementById("rest").style.display="none";
+setTimeout(function(){
+
+location.reload();
+},4000)
+  }
+else{
+  alert("Doubt Should contain minimum 10 letters.")
+}
+
+}
+
+</script>
+</body>
+</html>
